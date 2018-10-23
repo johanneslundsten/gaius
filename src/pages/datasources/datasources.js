@@ -37,17 +37,25 @@ export class DataSources extends React.Component {
     render() {
         return (
             <div>
-                <h3>TODO</h3>
+                <h3>Data Sources</h3>
                 <DataSourceList items={this.state.items} />
+                <h3>Add New Data Source</h3>
                 <form onSubmit={this.handleSubmit}>
                     <label htmlFor="new-name">
                         Name
                         <input id="new-name" name="new-name" type="text" ref={(newName) => this.newName = newName}/>
                     </label>
+                    <br/>
+                    <label htmlFor="new-schema">
+                        Schema Uri
+                        <input id="new-schema" name="new-schema" type="text" ref={(newSchema) => this.newSchema = newSchema}/>
+                    </label>
+                    <br/>
                     <label htmlFor="new-uri">
                         Uri
                         <input id="new-uri" type="text" ref={(newUri) => this.newUri = newUri}/>
                     </label>
+                    <br/>
                     <label htmlFor="new-type">
                         Type
                         <select name="type" ref={(newType) => this.newType = newType}>
@@ -63,8 +71,6 @@ export class DataSources extends React.Component {
         );
     }
 
-
-
     handleSubmit(e) {
         e.preventDefault();
 
@@ -77,11 +83,15 @@ export class DataSources extends React.Component {
         if (!this.newType.value.length) {
             return;
         }
+        if (!this.newType.newSchema.length) {
+            return;
+        }
 
         const newDataSource = {
             name : this.newName.value,
             uri : this.newUri.value,
             type : this.newType.value,
+            schemaUri : this.newSchema.value,
         };
 
         fetch('http://localhost:7878/gaius/v1/datasources', {
