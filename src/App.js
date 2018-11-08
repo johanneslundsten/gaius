@@ -1,30 +1,31 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {DataSources} from './pages/datasources/datasources'
+import {DataSourceList, DataSources} from './pages/datasources/datasources'
+import {RegisterDatasourceForm} from "./pages/datasources/registerDatasourceForm";
+import {NavbarFeatures} from "./pages/navbarFeatures";
+import {DataSourcesV2} from "./pages/datasources/datasourcesV2";
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        {/*<header className="App-header">*/}
-          {/*<img src={logo} className="App-logo" alt="logo" />*/}
-          {/*<p>*/}
-            {/*Edit <code>src/App.js</code> and save to reload.*/}
-          {/*</p>*/}
-          {/*<a*/}
-            {/*className="App-link"*/}
-            {/*href="https://reactjs.org"*/}
-            {/*target="_blank"*/}
-            {/*rel="noopener noreferrer"*/}
-          {/*>*/}
-            {/*Learn React*/}
-          {/*</a>*/}
-        {/*</header>*/}
-        <DataSources/>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="App">
+                <NavbarFeatures/>
+                <div className="row">
+                    <div className="col-md-8 ">
+                        .col-md-8
+                      <DataSourcesV2/>
+                    </div>
+                    <div className="col-md-4">
+                        .col-md-4
+                        <RegisterDatasourceForm/>
+                    </div>
+                </div>
+                {/*<DataSources/>*/}
+
+            </div>
+        );
+    }
 }
 
 export default App;
