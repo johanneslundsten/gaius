@@ -7,18 +7,84 @@ import {NavbarFeatures} from "./pages/navbarFeatures";
 import {DataSourcesV2} from "./pages/datasources/datasourcesV2";
 
 class App extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { dataSources: []};
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        this.getDataSources();
+    }
+
+    handleSubmit(dataSource, callback) {
+
+        console.log("XXZ" + JSON.stringify(dataSource));
+
+        fetch('http://localhost:7878/gaius/v1/datasources', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Origin': 'localhost:3000',
+                'Access-Control-Request-Method': 'POST'
+            },
+            body: JSON.stringify(dataSource)
+        })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    callback();
+                    this.getDataSources()
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                (error) => {
+                    callback(error);
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    });
+                }
+            )
+
+    }
+
+
+    getDataSources() {
+        fetch("http://localhost:7878/gaius/v1/datasources")
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        isLoaded: true,
+                        dataSources: result
+                    });
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                (error) => {
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    });
+                }
+            )
+    }
+
     render() {
         return (
             <div className="App">
                 <NavbarFeatures/>
                 <div className="row">
                     <div className="col-md-8 ">
-                        .col-md-8
-                      <DataSourcesV2/>
+                        <DataSourcesV2 dataSources={this.state.dataSources}/>
                     </div>
                     <div className="col-md-4">
-                        .col-md-4
-                        <RegisterDatasourceForm/>
+                        <RegisterDatasourceForm submitDataSource={this.handleSubmit}/>
                     </div>
                 </div>
                 {/*<DataSources/>*/}
@@ -27,5 +93,9 @@ class App extends Component {
         );
     }
 }
+
+
+
+
 
 export default App;

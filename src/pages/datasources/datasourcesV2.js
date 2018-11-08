@@ -1,43 +1,13 @@
 import React, { Component } from 'react';
+import './datasourcesV2.css'
 
 export class DataSourcesV2 extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { items: [], text: '' };
-    }
-
-    componentDidMount() {
-        this.getDataSources();
-    }
-
-
-    getDataSources() {
-        fetch("http://localhost:7878/gaius/v1/datasources")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        items: result
-                    });
-                },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
-    }
 
     render() {
         return (
             <div>
                 <h3>Data Sources</h3>
-                <DataSourceList items={this.state.items} />
+                <DataSourceList dataSources={this.props.dataSources} />
             </div>
         );
     }
@@ -47,21 +17,28 @@ class DataSourceList extends React.Component {
     render() {
         return (
             <ul>
-                {this.props.items.map(item => (
-                    <DataSource key={item.id} name={item.name} type={item.type} uri={item.uri}/>
+                {this.props.dataSources.map(dataSource => (
+                        <DataSourceCard key={dataSource.id} dataSource={dataSource} />
                 ))}
             </ul>
         );
     }
 }
 
-const DataSource = ( { name, uri, type } ) => {
+const DataSourceCard = ( { dataSource} ) => {
     return (
-        <li>
-            <div className="datasource">
-                <a> {name} {uri} {type} </a>
+        <div className="card">
+            <div className="card-body">
+                <h4 className="card-title">{dataSource.name}</h4>
+                <p className="card-text">{dataSource.description}</p>
+                <p className="card-text">{"Legal Status: " + dataSource.legalStatus}</p>
+                <a href={dataSource.schemaUri}>{"Schema (" + dataSource.schemaType + ")"} </a>
+                <p className="card-text">{"Maintainer: " + dataSource.maintainer}</p>
+                <p className="card-text">{"Source: " + dataSource.sourceUri + " (" + dataSource.sourceType + ")"}</p>
+                <a href={"https://s3.console.aws.amazon.com/s3/buckets/gaius/" + dataSource.name + "/?region=us-east-1&tab=overview"}>{"Explore Data"} </a>
+                <p href={"https://s3.console.aws.amazon.com/s3/buckets/gaius/" + dataSource.name + "/?region=us-east-1&tab=overview"}>{"Create Consumer"} </p>
             </div>
-        </li>
+        </div>
     );
 }
 
