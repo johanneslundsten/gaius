@@ -10,7 +10,20 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { dataSources: []};
+        this.state = { dataSources: [
+                {
+                    name: "Name",
+                    sourceUri: "Source Uri",
+                    sourceType: "Source Type",
+                    maintainer: "Maintainer",
+                    schemaUri: "Schema Uri",
+                    schemaType: "Schema Type",
+                    description: "Description",
+                    tier: "Tier",
+                    legalStatus: "Legal Status",
+                    status: "Initializing"
+                }
+            ]};
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
