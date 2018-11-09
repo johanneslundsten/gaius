@@ -29,7 +29,8 @@ const DataSourceCard = ( { dataSource} ) => {
     return (
         <div className="card">
             <div className="card-body">
-                <h4 className="card-title">{dataSource.name}</h4>
+                <h3 className="card-title">{dataSource.name}</h3>
+                <h4 className="card-title">{"Status: " + dataSource.status}</h4>
                 <p className="card-text">{dataSource.description}</p>
                 <p className="card-text">{"Legal Status: " + dataSource.legalStatus}</p>
                 <a href={dataSource.schemaUri}>{"Schema (" + dataSource.schemaType + ")"} </a>
